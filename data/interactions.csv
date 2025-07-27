@@ -1,0 +1,11 @@
+﻿id,a_id,b_id,interaction_type,details,effect
+1,1,4,clash,"May cause irritation when combined; both are actives that increase cell turnover. Use at alternate times (e.g., AM/PM).","Can cause skin irritation such as redness, flaking, and inflammation;"
+2,2,13,synergy,"Together, they fight oxidative stress, regulate oil, and improve tone; safe and stable in modern formulas.",Reduces inflammation and pigmentation
+3,4,13,clash,Potent actives with different optimal pH ranges; layering may irritate sensitive skin.,"May lead to dryness, sensitivity, or mild stinging"
+4,1,13,caution,Both are acidic and exfoliating; may compromise the skin barrier if overused together.,"Can cause burning, tightness, or dryness"
+5,1,3,buffer,"Hyaluronic Acid rehydrates the skin, counteracting BHA’s drying effect.",Reduces dryness and discomfort caused by exfoliation
+6,3,4,buffer,Hydration helps the skin tolerate retinol more comfortably.,"Minimizes flaking, irritation, and tightness"
+7,9,16,synergy,"Glycerin and HA both attract and retain water, enhancing hydration.","Provides multi-depth hydration, leaves skin smooth and plump"
+8,13,14,caution,Tretinoin is stronger than retinol; pairing with Vitamin C increases irritation risk.,"Can cause significant dryness, peeling, or redness"
+9,13,17,synergy,Ceramides support skin’s moisture barrier while vitamin C brightens.,Helps maintain skin barrier and reduces vitamin C–induced dryness
+10,13,18,clash,BP and vitamin C chemically destabilize one another and are both drying.,Increases risk of redness and dryness
