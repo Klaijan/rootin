@@ -1,0 +1,6 @@
+treatment_id,treatment_name,ingredient_id,ingredient_name,advice,duration_days,reason
+1,microneedling,13,Retinol,avoid,7,Retinol increases sensitivity and delays skin recovery
+1,microneedling,1,Glycolic Acid,avoid,5,Glycolic Acid exfoliates and may interfere with healing
+1,microneedling,2,Niacinamide,caution,2,Niacinamide can irritate sensitive post-procedure skin
+2,chemical_peel,15,Tretinoin,avoid,7,Tretinoin promotes peeling and should not be layered after a peel
+2,chemical_peel,14,Ascorbic Acid,caution,3,Ascorbic Acid may sting on compromised skin

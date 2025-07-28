@@ -1,10 +1,14 @@
 # Business logic (e.g., add_interaction, check_product_clash)
 
+from collections import defaultdict
 from itertools import combinations
 from typing import List, Union
 from app.db import (
+    get_ingredient_name,
     get_product_ingredients_id, 
-    get_interaction, 
+    get_interaction,
+    get_treatment,
+    get_treatment_rule,
     resolve_ingredient_name
 )
 
@@ -62,3 +66,73 @@ def compare_ingredient_lists(
             all_interactions.append(interaction)
 
     return all_interactions
+
+
+def after_treatment(
+    treatment_ids: List[int],
+    product_list: List[Union[int, List[str]]]
+):
+    if isinstance(treatment_ids, int):
+        treatment_ids = [treatment_ids]
+
+    all_rules = []
+    treatment_names = []
+
+    # Load all rules for all treatment IDs
+    for treatment_id in treatment_ids:
+        rules = get_treatment_rule(treatment_id)
+        all_rules.extend(rules)
+
+        treatment = get_treatment(treatment_id)
+        if treatment:
+            treatment_names.append(treatment["treatment_name"])
+
+    if not all_rules:
+        return {"error": "No treatment rules found."}
+
+    # Ingredient rule lookup
+    rule_lookup = {
+        int(rule["ingredient_id"]): rule for rule in all_rules
+    }
+
+    flagged = defaultdict(list)
+    product_avoid_days = {}
+
+    for idx, product in enumerate(product_list):
+        label = product if isinstance(product, int) else f"User_Product_{idx + 1}"
+        ingredient_ids = []
+
+        if isinstance(product, int):
+            ingredient_ids = get_product_ingredients_id(product)
+        elif isinstance(product, list):
+            for ing in product:
+                try:
+                    ing_id = int(ing)
+                except ValueError:
+                    ing_id = resolve_ingredient_name(ing)
+                if ing_id is not None:
+                    ingredient_ids.append(ing_id)
+
+        ingredient_ids = list(set(map(int, ingredient_ids)))
+        max_duration = 0
+
+        for ing_id in ingredient_ids:
+            if ing_id in rule_lookup:
+                rule = rule_lookup[ing_id]
+                flagged[label].append({
+                    "ingredient": get_ingredient_name(ing_id),
+                    "action": rule["advice"],  # 'avoid' or 'be careful'
+                    "duration_days": rule["duration_days"],
+                    "reason": rule["reason"]
+                })
+                if rule["advice"].lower() == "avoid":
+                    max_duration = max(max_duration, int(rule["duration_days"]))
+
+        if max_duration > 0:
+            product_avoid_days[label] = max_duration
+
+    return {
+        "treatment_name": ", ".join(treatment_names),
+        "flagged": dict(flagged),
+        "product_avoid_days": product_avoid_days
+    }

@@ -1,7 +1,7 @@
 # Entrypoint for CLI or test run
 
 from app.db import get_ingredient_name, interaction_type_order
-from app.logic import compare_ingredient_lists
+from app.logic import after_treatment, compare_ingredient_lists
 from app.scoring import routine_score
 
 if __name__ == "__main__":
@@ -23,6 +23,10 @@ if __name__ == "__main__":
         34, 
         67, 
         ["Ceramides", "Retinol", "Niacinamide"]
+    ]
+
+    treatments = [
+        1, # microneedling
     ]
 
     interactions = compare_ingredient_lists(products)
@@ -58,3 +62,21 @@ if __name__ == "__main__":
     scores = routine_score(products)
     for cat, val in scores.items():
         print(f"{cat}: {val:.2f}")
+
+    # Treatments
+    for treatment in treatments:
+        result = after_treatment(treatment, products)
+
+        if "error" in result:
+            print(f"❌ Error for treatment ID {treatment}: {result['error']}")
+        else:
+            treatment_name = result.get("treatment_name", f"Treatment {treatment}")
+            print(f"\n🧴 Post-Treatment Check for: {treatment_name}\n")
+            for product_source, flagged in result["flagged"].items():
+                if not flagged:
+                    continue
+                print(f"⚠️ Product: {product_source}")
+                for entry in flagged:
+                    action = entry["action"].upper()
+                    print(f"  - {entry['ingredient']} → {action}")
+                    print(f"    Reason: {entry['reason']}\n")

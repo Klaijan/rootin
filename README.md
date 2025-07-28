@@ -69,4 +69,25 @@ Anti-Aging & Firmness: 3.00
 Soothing & Redness Reduction: 2.00
 Hydration & Barrier Support: 3.00
 UV & Environmental Protection: 1.00
+
+🧴 Post-Treatment Check for: microneedling
+
+⚠️ Product: 1
+  - Niacinamide → CAUTION
+    Reason: Niacinamide can irritate sensitive post-procedure skin
+
+⚠️ Product: 2
+  - Niacinamide → CAUTION
+    Reason: Niacinamide can irritate sensitive post-procedure skin
+
+⚠️ Product: 3
+  - Salicylic Acid → AVOID
+    Reason: Glycolic Acid exfoliates and may interfere with healing
+
+  - Ascorbic Acid → AVOID
+    Reason: Retinol increases sensitivity and delays skin recovery
+
+⚠️ Product: User_Product_6
+  - Niacinamide → CAUTION
+    Reason: Niacinamide can irritate sensitive post-procedure skin
 ```
