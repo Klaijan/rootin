@@ -1,0 +1,259 @@
+/* static/css/styles.css */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #F7F7F3;
+    min-height: 100vh;
+    color: #936964;
+}
+
+.container {
+    max-width: 400px;
+    margin: 0 auto;
+    background: #F7F7F3;
+    min-height: 100vh;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+.header {
+    background: #C5D0B9;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.content {
+    padding: 20px;
+}
+
+.section {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(197, 208, 185, 0.3);
+}
+
+.section h3 {
+    color: #936964;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #936964;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+    color: #936964;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #C5D0B9;
+}
+
+.btn {
+    background: #C5D0B9;
+    color: white;
+    border: none;
+    padding: 14px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+    touch-action: manipulation;
+}
+
+.btn:hover, .btn:active {
+    transform: translateY(-1px);
+    background: #B5C0A9;
+    box-shadow: 0 4px 12px rgba(197, 208, 185, 0.3);
+}
+
+.btn-small {
+    width: auto;
+    padding: 8px 16px;
+    font-size: 14px;
+    margin-left: 10px;
+}
+
+.routine-item {
+    background: white;
+    border: 2px solid rgba(197, 208, 185, 0.3);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.routine-item-text {
+    flex: 1;
+    font-weight: 500;
+    color: #936964;
+}
+
+.tabs {
+    display: flex;
+    background: rgba(197, 208, 185, 0.1);
+    border-bottom: 1px solid rgba(197, 208, 185, 0.3);
+}
+
+.tab {
+    flex: 1;
+    padding: 15px 10px;
+    text-align: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    color: #936964;
+    transition: all 0.3s ease;
+    touch-action: manipulation;
+}
+
+.tab.active {
+    background: white;
+    color: #936964;
+    font-weight: 600;
+}
+
+.tab-content {
+    display: none;
+    padding: 20px;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.interaction-item {
+    background: white;
+    border-left: 4px solid #C5D0B9;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 0 8px 8px 0;
+    color: #936964;
+}
+
+.interaction-clash { 
+    border-left-color: #D2691E; 
+}
+
+.interaction-caution { 
+    border-left-color: #DAA520; 
+}
+
+.interaction-synergy { 
+    border-left-color: #C5D0B9; 
+}
+
+.chart-container {
+    position: relative;
+    height: 300px;
+    width: 100%;
+    margin: 20px 0;
+}
+
+.chart-canvas {
+    max-height: 300px;
+}
+
+.score-card {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.score-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #C5D0B9;
+}
+
+.score-label {
+    font-size: 12px;
+    color: #936964;
+    margin-top: 5px;
+}
+
+.loading {
+    text-align: center;
+    padding: 20px;
+    color: #936964;
+}
+
+.error {
+    background: rgba(210, 105, 30, 0.1);
+    color: #936964;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border: 1px solid rgba(210, 105, 30, 0.2);
+}
+
+.success {
+    background: rgba(197, 208, 185, 0.1);
+    color: #936964;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border: 1px solid rgba(197, 208, 185, 0.2);
+}
+
+.empty-state {
+    text-align: center;
+    color: #936964;
+    padding: 20px;
+    font-style: italic;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 480px) {
+    .container {
+        max-width: 100%;
+    }
+    
+    .tab {
+        font-size: 12px;
+        padding: 12px 8px;
+    }
+    
+    .header h1 {
+        font-size: 20px;
+    }
+    
+    .section {
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+}

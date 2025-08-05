@@ -1,93 +1,84 @@
-Running the `main.py` as it is, the result shows
+# Rootin 
+# A Skin Wellbeing App Setup
 
+## Quick Start
+
+1. **Install Dependencies**
+```bash
+pip install -r requirements.txt
 ```
-⚠️ Interactions found:
 
-Clash (4):
-- Retinol (from 1) × Ascorbic Acid (from 3)
-    Effect: May lead to dryness, sensitivity, or mild stinging
-    Details: Potent actives with different optimal pH ranges; layering may irritate sensitive skin.
-
-- Salicylic Acid (from 1) × Retinol (from 3)
-    Effect: Can cause skin irritation such as redness, flaking, and inflammation;
-    Details: May cause irritation when combined; both are actives that increase cell turnover. Use at alternate times (e.g., AM/PM).
-
-- Retinol (from 3) × Ascorbic Acid (from User_Product_6)
-    Effect: May lead to dryness, sensitivity, or mild stinging
-    Details: Potent actives with different optimal pH ranges; layering may irritate sensitive skin.
-
-- Salicylic Acid (from 3) × Retinol (from User_Product_6)
-    Effect: Can cause skin irritation such as redness, flaking, and inflammation;
-    Details: May cause irritation when combined; both are actives that increase cell turnover. Use at alternate times (e.g., AM/PM).
-
-
-Caution (1):
-- Salicylic Acid (from 3) × Ascorbic Acid (from 3)
-    Effect: Can cause burning, tightness, or dryness
-    Details: Both are acidic and exfoliating; may compromise the skin barrier if overused together.
-
-
-Synergy (8):
-- Glycerin (from 1) × Sodium Hyaluronate (from 1)
-    Effect: Provides multi-depth hydration, leaves skin smooth and plump
-    Details: Glycerin and HA both attract and retain water, enhancing hydration.
-
-- Glycerin (from 1) × Sodium Hyaluronate (from 3)
-    Effect: Provides multi-depth hydration, leaves skin smooth and plump
-    Details: Glycerin and HA both attract and retain water, enhancing hydration.
-
-- Niacinamide (from 1) × Ascorbic Acid (from 3)
-    Effect: Reduces inflammation and pigmentation
-    Details: Together, they fight oxidative stress, regulate oil, and improve tone; safe and stable in modern formulas.
-
-- Ascorbic Acid (from 1) × Ceramide NP (from 3)
-    Effect: Helps maintain skin barrier and reduces vitamin C–induced dryness
-    Details: Ceramides support skin’s moisture barrier while vitamin C brightens.
-
-- Glycerin (from 1) × Sodium Hyaluronate (from 3)
-    Effect: Provides multi-depth hydration, leaves skin smooth and plump
-    Details: Glycerin and HA both attract and retain water, enhancing hydration.
-
-- Niacinamide (from 2) × Ascorbic Acid (from 3)
-    Effect: Reduces inflammation and pigmentation
-    Details: Together, they fight oxidative stress, regulate oil, and improve tone; safe and stable in modern formulas.
-
-- Niacinamide (from 3) × Ascorbic Acid (from User_Product_6)
-    Effect: Reduces inflammation and pigmentation
-    Details: Together, they fight oxidative stress, regulate oil, and improve tone; safe and stable in modern formulas.
-
-- Glycerin (from 3) × Sodium Hyaluronate (from 3)
-    Effect: Provides multi-depth hydration, leaves skin smooth and plump
-    Details: Glycerin and HA both attract and retain water, enhancing hydration.
-
-
-🧪 Routine Category Scores:
-Acne & Sebum Control: 3.00
-Exfoliation: 1.00
-Brightening & Tone Correction: 2.00
-Anti-Aging & Firmness: 3.00
-Soothing & Redness Reduction: 2.00
-Hydration & Barrier Support: 3.00
-UV & Environmental Protection: 1.00
-
-🧴 Post-Treatment Check for: microneedling
-
-⚠️ Product: 1
-  - Niacinamide → CAUTION
-    Reason: Niacinamide can irritate sensitive post-procedure skin
-
-⚠️ Product: 2
-  - Niacinamide → CAUTION
-    Reason: Niacinamide can irritate sensitive post-procedure skin
-
-⚠️ Product: 3
-  - Salicylic Acid → AVOID
-    Reason: Glycolic Acid exfoliates and may interfere with healing
-
-  - Ascorbic Acid → AVOID
-    Reason: Retinol increases sensitivity and delays skin recovery
-
-⚠️ Product: User_Product_6
-  - Niacinamide → CAUTION
-    Reason: Niacinamide can irritate sensitive post-procedure skin
+2. **Run the FastAPI**
+```bash
+cd api/
+python -m app.main
 ```
+
+3. **Run web server (in another terminal)**
+```bash
+cd web/
+python -m http.server 3000
+```
+
+4. **Open in Browser**
+- Visit: http://localhost:8000 for API docs
+- Visit: http://localhost:3000 for Web App
+- The app works great on mobile browsers too!
+
+## How to Use
+
+### 1. Build Your Routine
+- **Add Product to Your Routine**: Select product and add
+- **Add Custom Ingredients**: Enter ingredient names like "Niacinamide, Retinol"
+
+### 2. Analyze Your Routine
+- **Check Interactions**: Find ingredient clashes, synergies, and cautions
+- **Calculate Scores**: See how your routine scores across different categories
+
+### 3. Post-Treatment Analysis
+- Select a treatment (Microneedling or Chemical Peel)
+- See which products to avoid and for how long
+
+## Features
+
+✅ **Mobile-First Design**: Works perfectly on phones  
+✅ **Real-Time Analysis**: Instant feedback on ingredient interactions  
+✅ **Treatment Safety**: Post-procedure product recommendations  
+✅ **Scoring System**: Quantified routine effectiveness  
+✅ **Custom Ingredients**: Add ingredients not in products  
+
+## API Endpoints
+
+- `GET /` - Main web interface
+- `POST /analyze/interactions` - Analyze ingredient interactions
+- `POST /analyze/score` - Calculate routine scores
+- `POST /analyze/post-treatment` - Post-treatment analysis
+- `GET /api/products` - List all products
+- `GET /api/ingredients` - List all ingredients
+
+## Next Steps for Full App
+
+1. **User Authentication**: Add user accounts and saved routines
+2. **Database**: Move from CSV to PostgreSQL/SQLite
+3. **AI Chat**: Add OpenAI integration for conversational analysis
+4. **Push Notifications**: Treatment reminders and routine suggestions
+5. **Data Logging**: Track skin changes over time
+6. **Camera Integration**: Skin photo analysis
+7. **Native Mobile App**: React Native or Flutter client
+
+## Data Structure
+
+The app uses your existing CSV structure:
+- `ingredients.csv` - Ingredient database
+- `products.csv` - Product catalog
+- `product_ingredients.csv` - Product-ingredient relationships
+- `interactions.csv` - Ingredient interaction rules
+- `treatments.csv` - Available treatments
+- `treatment_rules.csv` - Post-treatment safety rules
+
+## Testing
+
+Try these example routines:
+- **Product 1 + 3**: Should show retinol/vitamin C clash
+- **Product 1 + 2**: Good synergy between niacinamide and ceramides
+- **Custom**: "Salicylic Acid, Niacinamide" for acne routine
