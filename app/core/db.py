@@ -1,8 +1,9 @@
+import ast
 import pandas as pd
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
-import ast
-from app.models import IngredientInfo, ProductInfo
+from app.models.ingredient import IngredientInfo
+from app.models.product import ProductInfo
 
 class DataManager:
     """Handles all data loading and basic queries from CSV files"""
@@ -131,9 +132,11 @@ class DataManager:
             product_id=row["product_id"],
             brand_name=row["brand_name"],
             product_name=row["product_name"],
-            target_area=row.get("target_area", "face"),
+            target_area=row.get("target_area", ""),
             ingredient_ids=ingredient_ids,
-            inci_ingredients=inci_ingredients
+            inci_ingredients=inci_ingredients,
+            product_type=row["product_type"],
+            product_texture=row.get("product_texture", ""),
         )
     
     def get_product_ingredient_ids(self, product_id: int) -> List[int]:

@@ -1,40 +1,56 @@
 from typing import List, Dict, Any, Tuple
 from collections import defaultdict
 import ast
-from app.models import RoutineItem, InteractionResult, ScoreResult, TreatmentAnalysis
-from app.db import data_manager
+from app.models.routine import RoutineItem, InteractionResult, ScoreResult
+from app.models.treatment import TreatmentAnalysis
+from app.core.db import data_manager
 
 class SkincareAnalyzer:
     """Main business logic for skincare analysis"""
     
     def __init__(self):
         self.dm = data_manager
-    
+
     def resolve_routine_ingredients(self, items: List[RoutineItem]) -> List[Tuple[int, str]]:
-        """Resolve routine items to (ingredient_id, source_label) pairs"""
+        """Resolve routine items from steps to (ingredient_id, source_label) pairs"""
         resolved = []
         
-        for idx, item in enumerate(items):
-            if item.item_type == "product" and item.product_id:
+        for item in items:
+            if item.product_id:
                 ingredient_ids = self.dm.get_product_ingredient_ids(item.product_id)
-                product_info = self.dm.get_product_by_id(item.product_id)
-                if product_info:
-                    label = f"{product_info.brand_name} - {product_info.product_name}"
-                    resolved.extend([(ing_id, label) for ing_id in ingredient_ids])
-            
-            elif item.item_type == "custom" and item.ingredient_names:
-                label = item.label or f"Custom_{idx + 1}"
-                for ing_name in item.ingredient_names:
-                    try:
-                        ing_id = int(ing_name)  # Try as ID first
-                    except ValueError:
-                        ing_id = self.dm.resolve_ingredient_name(ing_name)
-                    
-                    if ing_id:
-                        resolved.append((ing_id, label))
+                # Use product attributes directly
+                label = f"{item.brand_name} - {item.product_name}"
+                resolved.extend([(ing_id, label) for ing_id in ingredient_ids])
         
         return resolved
     
+    """
+    def resolve_routine_ingredients(self, items: List[RoutineItem]) -> List[Tuple[int, str]]:
+        # Resolve routine items from steps to (ingredient_id, source_label) pairs 
+        resolved = []
+        
+            # TODO - add this back when allows custom product
+            # if item.item_type == "product" and item.product_id:
+            #     ingredient_ids = self.dm.get_product_ingredient_ids(item.product_id)
+            #     product_info = self.dm.get_product_by_id(item.product_id)
+            #     if product_info:
+            #         label = f"{product_info.brand_name} - {product_info.product_name}"
+            #         resolved.extend([(ing_id, label) for ing_id in ingredient_ids])
+            
+            # elif item.item_type == "custom" and item.ingredient_names:
+            #     label = item.label or f"Custom_{idx + 1}"
+            #     for ing_name in item.ingredient_names:
+            #         try:
+            #             ing_id = int(ing_name)  # Try as ID first
+            #         except ValueError:
+            #             ing_id = self.dm.resolve_ingredient_name(ing_name)
+                    
+            #         if ing_id:
+            #             resolved.append((ing_id, label))
+        
+        return resolved
+        """
+
     def analyze_interactions(self, items: List[RoutineItem]) -> List[InteractionResult]:
         """Analyze ingredient interactions in a routine"""
         resolved = self.resolve_routine_ingredients(items)
@@ -55,9 +71,10 @@ class SkincareAnalyzer:
                             product_b=source_b,
                             **interaction_data
                         ))
-        
+
         return interactions
-    
+        
+        
     def calculate_routine_score(self, items: List[RoutineItem]) -> ScoreResult:
         """Calculate routine category scores"""
         resolved = self.resolve_routine_ingredients(items)
@@ -90,7 +107,7 @@ class SkincareAnalyzer:
         category_map = {}
         for ing_id in ingredient_ids:
             ingredient = self.dm.get_ingredient_by_id(ing_id)
-            if ingredient:
+            if ingredient and ingredient.category_scores:
                 category_map[ing_id] = set(ingredient.category_scores.keys())
         
         # Check for clashes
@@ -137,10 +154,13 @@ class SkincareAnalyzer:
                 })
         
         treatment_info = self.dm.get_treatment_info(treatment_id)
-        treatment_name = treatment_info["treatment_name"] if treatment_info else f"Treatment {treatment_id}"
-        
+        if treatment_info:
+            treatment_name = treatment_info["treatment_name"]  # e.g., "chemical_peel"
+            treatment_display_name = treatment_info.get("display_name", treatment_name.replace("_", " ").title())
+
         return TreatmentAnalysis(
             treatment_name=treatment_name,
+            display_name=treatment_display_name,
             flagged_products=dict(flagged)
         )
 

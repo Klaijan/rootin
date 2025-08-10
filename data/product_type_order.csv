@@ -1,0 +1,17 @@
+id,order,name,type,display_name
+1,1,cleanser,cleanser,Cleanser
+2,2,exfoliator,exfoliator,Exfoliator
+3,3,toner,toner,"Toner and Essence"
+4,3,essence,toner,"Toner and Essence"
+5,4,serum,treatment,Treatment
+6,4,ampule,treatment,Treatment
+7,4,spot_treatment,treatment,Treatment
+8,5,sheet_mask,sheet_mask,"Sheet Mask"
+9,6,eye_cream,eye_care,"Eye Care"
+10,7,moisturizer,moisturizer,"Moisturizer"
+11,8,face_oil,face_oil,"Face Oil"
+12,9,sun_protection,sun_protection,"Sun Protection"
+13,5,concentrate,treatment,Treatment
+14,6,eye_serum,eye_care,"Eye Care"
+15,7,sleeping_mask,moisturizer,Moisturizer
+16,7,gel_cream,moisturizer,Moisturizer

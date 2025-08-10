@@ -10,7 +10,6 @@ pip install -r requirements.txt
 
 2. **Run the FastAPI**
 ```bash
-cd api/
 python -m app.main
 ```
 
@@ -50,9 +49,9 @@ python -m http.server 3000
 ## API Endpoints
 
 - `GET /` - Main web interface
-- `POST /analyze/interactions` - Analyze ingredient interactions
-- `POST /analyze/score` - Calculate routine scores
-- `POST /analyze/post-treatment` - Post-treatment analysis
+- `POST /{routine_id}/analyze/interactions` - Analyze ingredient interactions
+- `POST /{routine_id}/analyze/score` - Calculate routine scores
+- `POST /{routine_id}/analyze/post-treatment` - Post-treatment analysis
 - `GET /api/products` - List all products
 - `GET /api/ingredients` - List all ingredients
 

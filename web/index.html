@@ -156,6 +156,68 @@
         .tab-content.active {
             display: block;
         }
+
+        /* Routine Display Styles */
+        .routine-display-container {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 15px;
+            border: 1px solid rgba(197, 208, 185, 0.3);
+        }
+
+        .routine-step-display {
+            background: rgba(197, 208, 185, 0.05);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #C5D0B9;
+        }
+
+        .step-title {
+            font-weight: bold;
+            color: #936964;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .step-product {
+            padding: 8px 0;
+            padding-left: 20px;
+            color: #666;
+            border-bottom: 1px solid rgba(197, 208, 185, 0.2);
+        }
+
+        .step-product:last-child {
+            border-bottom: none;
+        }
+
+        .step-product::before {
+            content: "• ";
+            color: #C5D0B9;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .wait-time {
+            background: rgba(218, 165, 32, 0.1);
+            color: #B8860B;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .routine-title {
+            color: #936964;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(197, 208, 185, 0.3);
+        }
         
         .interaction-item {
             background: white;
@@ -247,6 +309,32 @@
             background: rgba(210, 105, 30, 0.2);
             color: #936964;
         }
+
+        .routine-builder {
+            background: rgba(197, 208, 185, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(197, 208, 185, 0.3);
+            display: none;
+        }
+
+        .routine-builder.active {
+            display: block;
+        }
+
+        .routine-builder h4 {
+            color: #936964;
+            margin-bottom: 15px;
+        }
+
+        .routine-display {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(197, 208, 185, 0.3);
+        }
         
         @media (max-width: 480px) {
             .container {
@@ -263,19 +351,20 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🧴 Skincare Wellbeing</h1>
-            <p>Your personal skin analysis companion</p>
+            <h1>🧴 Rootin</h1>
+            <p>Your personal skin wellbeing companion</p>
             <div id="apiStatus" class="api-status disconnected">🔴 Connecting to API...</div>
         </div>
         
         <div class="tabs">
-            <button class="tab active" id="tab-routine">My Routine</button>
+            <button class="tab active" id="tab-product">Product</button>
+            <button class="tab" id="tab-routine">My Routine</button>
             <button class="tab" id="tab-analyze">Analyze</button>
             <button class="tab" id="tab-treatments">Treatments</button>
         </div>
         
-        <!-- Routine Tab -->
-        <div id="routine" class="tab-content active">
+        <!-- Product Tab -->
+        <div id="product" class="tab-content active">
             <div class="section">
                 <h3>Build Your Routine</h3>
                 
@@ -293,12 +382,56 @@
                            placeholder="e.g., Niacinamide, Retinol">
                     <button class="btn" id="addIngredientsBtn">Add Ingredients</button>
                 </div>
-                
+
                 <div id="routineItems">
                     <div class="empty-state">No items in routine yet. Add products or ingredients above!</div>
                 </div>
+
+                <button class="btn" id="createRoutineBtn" style="background: #D2A574; margin-bottom: 10px; display: none;">
+                    📋 Create Routine from Current Items
+                </button>
                 
                 <button class="btn" id="clearRoutineBtn" style="background: #dc3545;">Clear All</button>
+
+                <div id="routineBuilder" class="routine-builder">
+                    <h4>Create Routine from Current Items</h4>
+                    <div class="form-group">
+                        <label for="routineName">Routine Name:</label>
+                        <input type="text" id="routineName" class="form-control" placeholder="e.g., Morning Routine, Evening Routine">
+                    </div>
+                    <div class="current-items-preview">
+                        <label>Items to include in routine:</label>
+                        <div id="currentItemsPreview" style="background: white; border: 1px solid #e9ecef; border-radius: 8px; padding: 15px; margin-bottom: 15px; max-height: 200px; overflow-y: auto;">
+                        </div>
+                    </div>
+                    <button class="btn" id="saveRoutineBtn">Save Routine</button>
+                    <button class="btn" id="cancelRoutineBtn" style="background: #dc3545;">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- My Routine Tab -->
+        <div id="routine" class="tab-content">
+            <div class="section">
+                <h3>📋 Your Saved Routines</h3>
+                
+                <div class="form-group">
+                    <label for="savedRoutineSelect">Select Routine to View:</label>
+                    <select id="savedRoutineSelect" class="form-control">
+                        <option value="">Select a routine to display...</option>
+                    </select>
+                </div>
+                
+                <button class="btn" id="displayRoutineBtn">📱 Show Routine Steps</button>
+                
+                <div id="routineDisplayArea" style="margin-top: 20px;">
+                    <!-- Routine display will appear here -->
+                </div>
+
+                <div id="savedRoutinesList" style="margin-top: 30px;">
+                    <h3>All Saved Routines</h3>
+                    <div id="routinesContainer"></div>
+                </div>
             </div>
         </div>
         
@@ -306,6 +439,14 @@
         <div id="analyze" class="tab-content">
             <div class="section">
                 <h3>Routine Analysis</h3>
+                
+                <div class="form-group">
+                    <label for="analyzeRoutineSelect">Select Saved Routine:</label>
+                    <select id="analyzeRoutineSelect" class="form-control">
+                        <option value="">Select a routine to analyze...</option>
+                    </select>
+                </div>
+                
                 <button class="btn" id="analyzeInteractionsBtn">🔍 Check Interactions</button>
                 <button class="btn" id="calculateScoresBtn">📊 Calculate Scores</button>
                 
@@ -317,6 +458,14 @@
         <div id="treatments" class="tab-content">
             <div class="section">
                 <h3>Post-Treatment Analysis</h3>
+                
+                <div class="form-group">
+                    <label for="treatmentRoutineSelect">Select Saved Routine:</label>
+                    <select id="treatmentRoutineSelect" class="form-control">
+                        <option value="">Select a routine to analyze...</option>
+                    </select>
+                </div>
+                
                 <div class="form-group">
                     <label for="treatmentSelect">Select Treatment:</label>
                     <select id="treatmentSelect" class="form-control">
@@ -331,435 +480,14 @@
         </div>
     </div>
 
+    <!-- Load the external JavaScript file -->
     <script>
-        // Configuration
-        const API_BASE = 'http://localhost:8000/api';
-        
-        // Global state
-        let currentRoutine = [];
-        let products = [];
-        
-        // Initialize app when DOM loads
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Skincare app starting...');
-            initializeApp();
-        });
-        
-        async function initializeApp() {
-            // Check API connection and load products
-            await checkAPIConnection();
-            await loadProducts();
-            
-            // Setup event listeners
-            setupEventListeners();
-        }
-        
-        async function checkAPIConnection() {
-            const statusElement = document.getElementById('apiStatus');
-            try {
-                const response = await fetch(`${API_BASE.replace('/api', '')}/health`);
-                if (response.ok) {
-                    statusElement.textContent = '🟢 Connected to API';
-                    statusElement.className = 'api-status connected';
-                } else {
-                    throw new Error('API not responding');
-                }
-            } catch (error) {
-                statusElement.textContent = '🔴 API Disconnected';
-                statusElement.className = 'api-status disconnected';
-                console.error('API connection failed:', error);
-            }
-        }
-        
-        async function loadProducts() {
-            try {
-                const response = await fetch(`${API_BASE}/products`);
-                if (response.ok) {
-                    products = await response.json();
-                    populateProductDropdown();
-                } else {
-                    console.error('Failed to load products');
-                    // Use fallback products
-                    products = [
-                        {product_id: 1, brand_name: "Kiehl's", product_name: "Micro-Dose Anti-Aging Retinol Serum"},
-                        {product_id: 2, brand_name: "The Ordinary", product_name: "Niacinamide 10% + Zinc 1%"},
-                        {product_id: 3, brand_name: "La Roche Posay", product_name: "Vitamin C12 Serum"}
-                    ];
-                    populateProductDropdown();
-                }
-            } catch (error) {
-                console.error('Error loading products:', error);
-            }
-        }
-        
-        function populateProductDropdown() {
-            const select = document.getElementById('productSelect');
-            select.innerHTML = '<option value="">Select a product...</option>';
-            
-            products.forEach(product => {
-                const option = document.createElement('option');
-                option.value = product.product_id;
-                option.textContent = `${product.brand_name} - ${product.product_name}`;
-                select.appendChild(option);
-            });
-        }
-        
-        function setupEventListeners() {
-            // Tab switching
-            document.getElementById('tab-routine').addEventListener('click', function() {
-                switchTab('routine', this);
-            });
-            document.getElementById('tab-analyze').addEventListener('click', function() {
-                switchTab('analyze', this);
-            });
-            document.getElementById('tab-treatments').addEventListener('click', function() {
-                switchTab('treatments', this);
-            });
-            
-            // Routine management
-            document.getElementById('addProductBtn').addEventListener('click', addProduct);
-            document.getElementById('addIngredientsBtn').addEventListener('click', addCustomIngredients);
-            document.getElementById('clearRoutineBtn').addEventListener('click', clearRoutine);
-            
-            // Analysis
-            document.getElementById('analyzeInteractionsBtn').addEventListener('click', analyzeInteractions);
-            document.getElementById('calculateScoresBtn').addEventListener('click', calculateScores);
-            document.getElementById('analyzeTreatmentBtn').addEventListener('click', analyzeTreatment);
-            
-            // Enter key support
-            document.getElementById('customIngredients').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') addCustomIngredients();
-            });
-        }
-        
-        function switchTab(tabName, tabButton) {
-            // Hide all tabs
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            // Show selected tab
-            document.getElementById(tabName).classList.add('active');
-            tabButton.classList.add('active');
-        }
-        
-        function addProduct() {
-            const productSelect = document.getElementById('productSelect');
-            const productId = parseInt(productSelect.value);
-            
-            if (!productId) {
-                alert('Please select a product');
-                return;
-            }
-            
-            const product = products.find(p => p.product_id === productId);
-            if (!product) {
-                alert('Product not found');
-                return;
-            }
-            
-            const item = {
-                item_type: 'product',
-                product_id: productId,
-                label: `${product.brand_name} - ${product.product_name}`
-            };
-            
-            currentRoutine.push(item);
-            updateRoutineDisplay();
-            productSelect.value = '';
-        }
-        
-        function addCustomIngredients() {
-            const ingredients = document.getElementById('customIngredients').value.trim();
-            
-            if (!ingredients) {
-                alert('Please enter ingredient names');
-                return;
-            }
-            
-            const ingredientList = ingredients.split(',').map(ing => ing.trim()).filter(ing => ing);
-            const item = {
-                item_type: 'custom',
-                ingredient_names: ingredientList,
-                label: `Custom: ${ingredientList.join(', ')}`
-            };
-            
-            currentRoutine.push(item);
-            updateRoutineDisplay();
-            document.getElementById('customIngredients').value = '';
-        }
-        
-        function updateRoutineDisplay() {
-            const container = document.getElementById('routineItems');
-            
-            if (currentRoutine.length === 0) {
-                container.innerHTML = '<div class="empty-state">No items in routine yet. Add products or ingredients above!</div>';
-                return;
-            }
-            
-            let html = '';
-            currentRoutine.forEach((item, index) => {
-                html += `
-                    <div class="routine-item">
-                        <div class="routine-item-text">
-                            <div style="font-weight: 600; color: #936964;">${item.label}</div>
-                        </div>
-                        <button class="btn btn-small" onclick="removeItem(${index})" style="background: #dc3545;">Remove</button>
-                    </div>
-                `;
-            });
-            
-            container.innerHTML = html;
-        }
-        
-        function removeItem(index) {
-            currentRoutine.splice(index, 1);
-            updateRoutineDisplay();
-        }
-        
-        function clearRoutine() {
-            currentRoutine = [];
-            updateRoutineDisplay();
-            document.getElementById('analysisResults').innerHTML = '';
-            document.getElementById('treatmentResults').innerHTML = '';
-        }
-        
-        async function analyzeInteractions() {
-            if (currentRoutine.length === 0) {
-                alert('Please add items to your routine first');
-                return;
-            }
-            
-            const resultsDiv = document.getElementById('analysisResults');
-            resultsDiv.innerHTML = '<div class="loading">🔍 Analyzing interactions...</div>';
-            
-            try {
-                const response = await fetch(`${API_BASE}/analyze/interactions`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        name: 'My Routine',
-                        items: currentRoutine,
-                        time_of_day: 'morning'
-                    })
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const interactions = await response.json();
-                displayInteractions(interactions);
-            } catch (error) {
-                console.error('Analysis error:', error);
-                resultsDiv.innerHTML = `<div class="error">Error: ${error.message}. Make sure your FastAPI is running on localhost:8000</div>`;
-            }
-        }
-        
-        function displayInteractions(interactions) {
-            const resultsDiv = document.getElementById('analysisResults');
-            
-            if (interactions.length === 0) {
-                resultsDiv.innerHTML = '<div class="success">✅ No problematic interactions found!</div>';
-                return;
-            }
-            
-            let html = '<h4>🔍 Ingredient Interactions Found:</h4>';
-            interactions.forEach(interaction => {
-                const typeClass = `interaction-${interaction.interaction_type.toLowerCase()}`;
-                const emoji = interaction.interaction_type === 'clash' ? '⚠️' : 
-                             interaction.interaction_type === 'caution' ? '🟡' : '✅';
-                
-                html += `
-                    <div class="interaction-item ${typeClass}">
-                        <strong>${emoji} ${interaction.interaction_type.toUpperCase()}</strong><br>
-                        <strong>${interaction.ingredient_a_name} × ${interaction.ingredient_b_name}</strong><br>
-                        <div style="font-size: 12px; color: #666; margin: 5px 0;">
-                            From: ${interaction.product_a}<br>
-                            And: ${interaction.product_b}
-                        </div>
-                        <strong>Effect:</strong> ${interaction.effect}<br>
-                        <strong>Details:</strong> ${interaction.details}
-                    </div>
-                `;
-            });
-            
-            resultsDiv.innerHTML = html;
-        }
-        
-        async function calculateScores() {
-            if (currentRoutine.length === 0) {
-                alert('Please add items to your routine first');
-                return;
-            }
-            
-            const resultsDiv = document.getElementById('analysisResults');
-            resultsDiv.innerHTML = '<div class="loading">📊 Calculating scores...</div>';
-            
-            try {
-                const response = await fetch(`${API_BASE}/analyze/score`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        name: 'My Routine',
-                        items: currentRoutine,
-                        time_of_day: 'morning'
-                    })
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const scores = await response.json();
-                displayScores(scores);
-            } catch (error) {
-                console.error('Scoring error:', error);
-                resultsDiv.innerHTML = `<div class="error">Error: ${error.message}. Make sure your FastAPI is running on localhost:8000</div>`;
-            }
-        }
-        
-        function displayScores(scores) {
-            const resultsDiv = document.getElementById('analysisResults');
-            
-            let html = `
-                <h4>📊 Your Routine Scores:</h4>
-                <div class="chart-container">
-                    <canvas id="scoresChart" class="chart-canvas"></canvas>
-                </div>
-                <div class="score-card" style="margin-top: 15px;">
-                    <div class="score-value">${scores.total_score.toFixed(1)}</div>
-                    <div class="score-label">Total Routine Score</div>
-                </div>
-            `;
-            
-            resultsDiv.innerHTML = html;
-            
-            // Create spider chart
-            setTimeout(() => createSpiderChart(scores), 100);
-        }
-        
-        function createSpiderChart(scores) {
-            const ctx = document.getElementById('scoresChart');
-            if (!ctx) return;
-            
-            const categories = Object.keys(scores.category_scores);
-            const values = Object.values(scores.category_scores);
-            
-            const shortLabels = categories.map(label => {
-                if (label.includes('&')) {
-                    return label.split(' &')[0];
-                }
-                return label.length > 15 ? label.substring(0, 12) + '...' : label;
-            });
-            
-            new Chart(ctx, {
-                type: 'radar',
-                data: {
-                    labels: shortLabels,
-                    datasets: [{
-                        label: 'Routine Score',
-                        data: values,
-                        fill: true,
-                        backgroundColor: 'rgba(197, 208, 185, 0.2)',
-                        borderColor: '#C5D0B9',
-                        borderWidth: 2,
-                        pointBackgroundColor: '#C5D0B9',
-                        pointBorderColor: '#936964',
-                        pointBorderWidth: 2,
-                        pointRadius: 5,
-                        pointHoverRadius: 7
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        r: {
-                            beginAtZero: true,
-                            max: Math.max(5, Math.max(...values) + 1),
-                            ticks: { display: false },
-                            grid: { color: 'rgba(197, 208, 185, 0.3)' },
-                            angleLines: { color: 'rgba(197, 208, 185, 0.3)' },
-                            pointLabels: {
-                                font: { size: 11 },
-                                color: '#936964'
-                            }
-                        }
-                    }
-                }
-            });
-        }
-        
-        async function analyzeTreatment() {
-            if (currentRoutine.length === 0) {
-                alert('Please add items to your routine first');
-                return;
-            }
-            
-            const treatmentId = document.getElementById('treatmentSelect').value;
-            const resultsDiv = document.getElementById('treatmentResults');
-            
-            resultsDiv.innerHTML = '<div class="loading">🏥 Analyzing post-treatment safety...</div>';
-            
-            try {
-                const response = await fetch(`${API_BASE}/analyze/post-treatment?treatment_id=${treatmentId}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        name: 'My Routine',
-                        items: currentRoutine,
-                        time_of_day: 'morning'
-                    })
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const result = await response.json();
-                displayTreatmentResults(result);
-            } catch (error) {
-                console.error('Treatment analysis error:', error);
-                resultsDiv.innerHTML = `<div class="error">Error: ${error.message}. Make sure your FastAPI is running on localhost:8000</div>`;
-            }
-        }
-        
-        function displayTreatmentResults(result) {
-            const resultsDiv = document.getElementById('treatmentResults');
-            
-            let html = `<h4>🏥 Post-${result.treatment_name} Analysis:</h4>`;
-            
-            if (Object.keys(result.flagged_products).length === 0) {
-                html += '<div class="success">✅ All products in your routine are safe to use after your treatment!</div>';
-            } else {
-                for (const [productName, warnings] of Object.entries(result.flagged_products)) {
-                    html += `<div class="interaction-item">
-                        <strong>📦 ${productName}</strong><br><br>`;
-                    
-                    warnings.forEach(warning => {
-                        const emoji = warning.action === 'avoid' ? '🚫' : '⚠️';
-                        const actionClass = warning.action === 'avoid' ? 'interaction-clash' : 'interaction-caution';
-                        
-                        html += `
-                            <div class="${actionClass}" style="margin: 8px 0; padding: 10px; border-radius: 6px;">
-                                <strong>${emoji} ${warning.action.toUpperCase()}:</strong> ${warning.ingredient}<br>
-                                <strong>Reason:</strong> ${warning.reason}<br>
-                                <strong>Duration:</strong> ${warning.duration_days} days
-                            </div>
-                        `;
-                    });
-                    
-                    html += '</div>';
-                }
-            }
-            
-            resultsDiv.innerHTML = html;
-        }
+        // Pass data from server to JavaScript
+        window.appData = {
+            apiBase: 'http://localhost:8000/api',
+            products: [] // This will be populated by loadProducts()
+        };
     </script>
+    <script src="app.js"></script>
 </body>
 </html>

@@ -3,8 +3,8 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routes import api_router
-from app.db import data_manager
+from app.routers import api_router
+from app.core.db import data_manager
 
 def create_app() -> FastAPI:
     """Application factory"""

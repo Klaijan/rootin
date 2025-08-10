@@ -1,0 +1,12 @@
+id,order,name,description
+1,1,water,"Water-based liquid products"
+2,1,mist,"Spray/mist products"
+3,2,essence,"Essence texture"
+4,3,gel_cream,"Gel texture"
+5,4,serum,"Serum texture"
+6,4,lotion,"Lotion texture"
+7,5,cream,"Cream texture"
+8,6,thick_cream,"Thick cream texture"
+9,6,balm,"Balm texture"
+10,7,oil,"Oil texture"
+11,7,paste,"Thick paste texture"

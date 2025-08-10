@@ -1,7 +1,7 @@
 from collections import defaultdict
 import ast
 from typing import Union
-from app.db import (
+from app.core.db import (
     get_product_ingredients_id,
     resolve_ingredient_name,
     get_interaction,
@@ -43,10 +43,10 @@ def apply_clash_penalty(all_ingredients: list[int]) -> dict:
     return penalty
 
 
-def routine_score(routine_items: list[Union[int, list[str]]]) -> dict:
+def routine_score(items: list[Union[int, list[str]]]) -> dict:
     all_ingredients = []
 
-    for idx, item in enumerate(routine_items):
+    for idx, item in enumerate(items):
         if isinstance(item, int):  # product ID
             all_ingredients += get_product_ingredients_id(item)
         elif isinstance(item, list):  # ingredient names
